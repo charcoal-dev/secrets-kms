@@ -12,6 +12,7 @@ use Charcoal\Contracts\Security\Secrets\SecretGeneratorInterface;
 
 /**
  * PRNG (pseudo-random number generator) that uses random_bytes()
+ * @api
  */
 final readonly class PrngEntropy32 implements SecretGeneratorInterface
 {

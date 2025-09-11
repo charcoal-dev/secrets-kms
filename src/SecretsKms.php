@@ -6,7 +6,7 @@
 
 declare(strict_types=1);
 
-namespace Charcoal\Contracts\Security\Secrets;
+namespace Charcoal\Security\Secrets;
 
 /**
  * Constants and behavior control trigger for Secrets KMS.

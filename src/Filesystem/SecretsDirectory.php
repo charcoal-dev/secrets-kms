@@ -12,7 +12,6 @@ use Charcoal\Base\Support\ErrorHelper;
 use Charcoal\Contracts\Security\Secrets\SecretGeneratorInterface;
 use Charcoal\Contracts\Security\Secrets\SecretKeyInterface;
 use Charcoal\Contracts\Security\Secrets\SecretNamespaceInterface;
-use Charcoal\Contracts\Security\Secrets\SecretsKms;
 use Charcoal\Contracts\Security\Secrets\SecretStorageInterface;
 use Charcoal\Filesystem\Enums\Assert;
 use Charcoal\Filesystem\Exceptions\FilesystemException;
@@ -20,6 +19,7 @@ use Charcoal\Filesystem\Node\DirectoryNode;
 use Charcoal\Filesystem\Path\DirectoryPath;
 use Charcoal\Security\Secrets\Config\TrustedFqcn;
 use Charcoal\Security\Secrets\Contracts\SecretsProviderEnumInterface;
+use Charcoal\Security\Secrets\SecretsKms;
 use Charcoal\Security\Secrets\SecretsNamespace;
 
 /**
