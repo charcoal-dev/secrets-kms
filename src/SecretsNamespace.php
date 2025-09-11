@@ -9,10 +9,10 @@ declare(strict_types=1);
 namespace Charcoal\Security\Secrets;
 
 use Charcoal\Contracts\Security\Secrets\SecretGeneratorInterface;
+use Charcoal\Contracts\Security\Secrets\SecretKeyInterface;
 use Charcoal\Contracts\Security\Secrets\SecretNamespaceInterface;
 use Charcoal\Contracts\Security\Secrets\SecretsKms;
 use Charcoal\Contracts\Security\Secrets\SecretStorageInterface;
-use Charcoal\Security\Secrets\Types\SecretKey32;
 
 /**
  * A namespace for managing secrets.
@@ -32,7 +32,7 @@ final readonly class SecretsNamespace implements SecretNamespaceInterface
     /**
      * Loads a secret from the namespace.
      */
-    public function load(string $id, int $version): SecretKey32
+    public function load(string $id, int $version): SecretKeyInterface
     {
         return $this->storage->load($id, $version, $this);
     }
@@ -40,9 +40,9 @@ final readonly class SecretsNamespace implements SecretNamespaceInterface
     /**
      * Stores a secret in the namespace.
      */
-    public function store(string $id, int $version, SecretGeneratorInterface $key): void
+    public function store(string $id, int $version, SecretGeneratorInterface $generator): void
     {
-        $this->storage->store($this, $id, $version, $key);
+        $this->storage->store($this, $id, $version, $generator);
     }
 
     /**
