@@ -9,7 +9,6 @@ declare(strict_types=1);
 namespace Charcoal\Security\Secrets\Filesystem;
 
 use Charcoal\Base\Support\ErrorHelper;
-use Charcoal\Contracts\Buffers\Sensitive\SensitiveKeyBufferInterface;
 use Charcoal\Contracts\Security\Secrets\SecretGeneratorInterface;
 use Charcoal\Contracts\Security\Secrets\SecretKeyInterface;
 use Charcoal\Contracts\Security\Secrets\SecretNamespaceInterface;
