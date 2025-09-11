@@ -33,7 +33,7 @@ abstract readonly class AbstractKeyBuffer implements ByteArrayInterface,
         private false|string $entropy
     )
     {
-        if (!static::FixedLengthBytes || !in_array(static::FixedLengthBytes, SecretsKms::SECRET_BYTELENS, true)) {
+        if (!static::FixedLengthBytes || !in_array(static::FixedLengthBytes, SecretsKms::SECRET_KEY_BUFFERS, true)) {
             throw new \LogicException("Invalid secret byte length");
         }
 
