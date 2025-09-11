@@ -14,18 +14,19 @@
   ],
   "require": {
     "php": "^8.3",
-    "charcoal-dev/contracts-security": "dev-main"
+    "charcoal-dev/contracts-security": "dev-main#b7986b0",
+    "charcoal-dev/filesystem": "^0.2.14"
   },
   "autoload": {
     "psr-4": {
-      "Charcoal\\Secrets\\": [
+      "Charcoal\\Security\\Secrets\\": [
         "src"
       ]
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Charcoal\\Secrets\\Tests\\": "tests/"
+      "Charcoal\\Security\\Secrets\\Tests\\": "tests/"
     }
   },
   "minimum-stability": "dev"
