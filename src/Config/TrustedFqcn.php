@@ -8,10 +8,12 @@ declare(strict_types=1);
 
 namespace Charcoal\Security\Secrets\Config;
 
+use Charcoal\Contracts\Security\Secrets\TrustedFqcnInterface;
+
 /**
  * Passed to constructor of SecretsStorageProvider.
  */
-final readonly class TrustedFqcn
+final readonly class TrustedFqcn implements TrustedFqcnInterface
 {
     private array $secretsUtilityClasses;
     private array $secretsNamespaceContracts;
