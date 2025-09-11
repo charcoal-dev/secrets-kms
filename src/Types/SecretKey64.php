@@ -11,7 +11,7 @@ namespace Charcoal\Security\Secrets\Types;
 /**
  * @api 64 bytes secret key
  */
-final readonly class SecretKey64 extends AbstractKeyBuffer
+final readonly class SecretKey64 extends AbstractSecretKey
 {
     protected const int FixedLengthBytes = 64;
 }

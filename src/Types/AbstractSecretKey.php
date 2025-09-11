@@ -12,14 +12,15 @@ use Charcoal\Base\Support\ErrorHelper;
 use Charcoal\Contracts\Buffers\ByteArrayInterface;
 use Charcoal\Contracts\Buffers\Sensitive\SensitiveKeyBufferInterface;
 use Charcoal\Contracts\Security\Secrets\SecretKeyInterface;
-use Charcoal\Contracts\Security\Secrets\SecretsKms;
+use Charcoal\Contracts\Security\Secrets\SecretStorageInterface;
 use Charcoal\Contracts\Security\Secrets\SecretsUtilityInterface;
+use Charcoal\Security\Secrets\SecretsKms;
 use Charcoal\Security\Secrets\Traits\SensitiveBufferTrait;
 
 /**
  * An abstraction of secret key buffer
  */
-abstract readonly class AbstractKeyBuffer implements ByteArrayInterface,
+abstract readonly class AbstractSecretKey implements ByteArrayInterface,
     SensitiveKeyBufferInterface,
     SecretKeyInterface
 {
@@ -28,9 +29,10 @@ abstract readonly class AbstractKeyBuffer implements ByteArrayInterface,
     protected const int FixedLengthBytes = 0;
 
     final public function __construct(
-        private string       $ref,
-        private int          $version,
-        private false|string $entropy
+        private SecretStorageInterface $storage,
+        private string                 $ref,
+        private int                    $version,
+        private false|string           $entropy
     )
     {
         if (!static::FixedLengthBytes || !in_array(static::FixedLengthBytes, SecretsKms::SECRET_KEY_BUFFERS, true)) {
@@ -69,8 +71,18 @@ abstract readonly class AbstractKeyBuffer implements ByteArrayInterface,
         return $this->version;
     }
 
-    final public function request(SecretsUtilityInterface $class, string $method, object|string|null $subject): object
+    final public function handleRequest(SecretsUtilityInterface $class, string $method, object|string|null $subject): object
     {
-        // TODO: Implement request() method.
+        // Validate FQCN of secret requester/utilizer
+        if (!$this->storage->trustedFqcn()->canUtilizeSecrets($class)) {
+            throw new \DomainException("Cannot utilize secrets from class: " . $class::class);
+        }
+
+        // Make sure the method exists; and is callable
+        if (!is_callable([$class, $method])) {
+            throw new \LogicException("Method does not exist: " . $method);
+        }
+
+        return $class->$method($subject);
     }
 }
