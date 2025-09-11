@@ -8,7 +8,7 @@ declare(strict_types=1);
 
 namespace Charcoal\Security\Secrets;
 
-use Charcoal\Contracts\Buffers\Sensitive\SensitiveKeyBufferInterface;
+use Charcoal\Contracts\Security\Secrets\SecretGeneratorInterface;
 use Charcoal\Contracts\Security\Secrets\SecretNamespaceInterface;
 use Charcoal\Contracts\Security\Secrets\SecretsKms;
 use Charcoal\Contracts\Security\Secrets\SecretStorageInterface;
@@ -40,7 +40,7 @@ final readonly class SecretsNamespace implements SecretNamespaceInterface
     /**
      * Stores a secret in the namespace.
      */
-    public function store(string $id, int $version, SensitiveKeyBufferInterface $key): void
+    public function store(string $id, int $version, SecretGeneratorInterface $key): void
     {
         $this->storage->store($this, $id, $version, $key);
     }
