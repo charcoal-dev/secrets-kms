@@ -1,0 +1,32 @@
+{
+  "name": "charcoal-dev/secrets-kms",
+  "description": "Secrets KMS (Key Management Service) for Charcoal Apps",
+  "type": "library",
+  "homepage": "https://github.com/charcoal-dev/secrets-kms",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Furqan A. Siddiqui",
+      "email": "hello@furqansiddiqui.com",
+      "homepage": "https://www.furqansiddiqui.com",
+      "role": "Author"
+    }
+  ],
+  "require": {
+    "php": "^8.3",
+    "charcoal-dev/contracts-security": "dev-main"
+  },
+  "autoload": {
+    "psr-4": {
+      "Charcoal\\Secrets\\": [
+        "src"
+      ]
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Charcoal\\Secrets\\Tests\\": "tests/"
+    }
+  },
+  "minimum-stability": "dev"
+}
