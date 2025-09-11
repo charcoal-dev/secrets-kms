@@ -32,6 +32,7 @@ abstract readonly class AbstractSecretKey implements ByteArrayInterface,
         private SecretStorageInterface $storage,
         private string                 $ref,
         private int                    $version,
+        #[\SensitiveParameter]
         private false|string           $entropy
     )
     {

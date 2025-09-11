@@ -224,7 +224,7 @@ final readonly class SecretsDirectory implements SecretStorageInterface
      */
     private function generateSecretBuffer(string $ref, int $version, false|string $entropy): SecretKeyInterface
     {
-        return new $this->keyBufferFqcn($ref, $version, $entropy);
+        return new $this->keyBufferFqcn($this, $ref, $version, $entropy);
     }
 
     /**
