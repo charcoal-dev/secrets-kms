@@ -14,7 +14,7 @@
   ],
   "require": {
     "php": "^8.3",
-    "charcoal-dev/contracts-security": "dev-main#6e36a3d",
+    "charcoal-dev/contracts-security": "dev-main",
     "charcoal-dev/filesystem": "^0.2.14"
   },
   "autoload": {
