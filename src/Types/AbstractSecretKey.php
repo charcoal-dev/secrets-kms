@@ -82,7 +82,7 @@ abstract readonly class AbstractSecretKey implements ByteArrayInterface,
         string                  $method,
         int                     $argIndex = 0,
         array                   $args = []
-    ): object
+    ): mixed
     {
         // Validate FQCN of secret requester/utilizer
         if (!$this->storage->trustedFqcn()->canUtilizeSecrets($class)) {
