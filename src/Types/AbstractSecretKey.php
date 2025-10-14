@@ -80,8 +80,7 @@ abstract readonly class AbstractSecretKey implements ByteArrayInterface,
     final public function requestSecret(
         SecretsUtilityInterface $class,
         string                  $method,
-        int                     $argIndex = 0,
-        array                   $args = []
+        \Closure                $callback
     ): mixed
     {
         // Validate FQCN of secret requester/utilizer
@@ -94,11 +93,6 @@ abstract readonly class AbstractSecretKey implements ByteArrayInterface,
             throw new \LogicException("Method does not exist: " . $method);
         }
 
-        if ($args && !array_is_list($args)) {
-            throw new \InvalidArgumentException("Invalid set of arguments to requestSecret method");
-        }
-
-        $args[$argIndex] = $this->entropy;
-        return call_user_func_array([$class, $method], $args);
+        return $callback($this->entropy);
     }
 }
