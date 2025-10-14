@@ -79,7 +79,6 @@ abstract readonly class AbstractSecretKey implements ByteArrayInterface,
 
     final public function requestSecret(
         SecretsUtilityInterface $class,
-        string                  $method,
         \Closure                $callback
     ): mixed
     {
@@ -88,11 +87,6 @@ abstract readonly class AbstractSecretKey implements ByteArrayInterface,
             throw new \DomainException("Cannot utilize secrets from class: " . $class::class);
         }
 
-        // Make sure the method exists; and is callable
-        if (!is_callable([$class, $method])) {
-            throw new \LogicException("Method does not exist: " . $method);
-        }
-
-        return $callback($this->entropy);
+        return $class->handleSecretEntropy($callback($this->entropy));
     }
 }
