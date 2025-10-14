@@ -26,6 +26,7 @@ use Charcoal\Security\Secrets\SecretsNamespace;
  * Represents a directory for managing secrets and provides methods
  * to retrieve, store, delete, and check the existence of secrets.
  * Implements the SecretStorageInterface for standard operations.
+ * @api
  */
 final readonly class SecretsDirectory implements SecretStorageInterface
 {

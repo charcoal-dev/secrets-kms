@@ -11,7 +11,6 @@ namespace Charcoal\Security\Secrets;
 use Charcoal\Contracts\Security\Secrets\SecretGeneratorInterface;
 use Charcoal\Contracts\Security\Secrets\SecretKeyInterface;
 use Charcoal\Contracts\Security\Secrets\SecretNamespaceInterface;
-use Charcoal\Contracts\Security\Secrets\SecretsKms;
 use Charcoal\Contracts\Security\Secrets\SecretStorageInterface;
 
 /**
@@ -59,15 +58,6 @@ final readonly class SecretsNamespace implements SecretNamespaceInterface
     public function has(string $id, int $version): bool
     {
         return $this->storage->has($id, $version, $this);
-    }
-
-    /**
-     * Returns a list of all secrets in the namespace.
-     * @return string[]
-     */
-    public function list(): array
-    {
-        return $this->storage->list($this);
     }
 
     /**
