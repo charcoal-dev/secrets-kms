@@ -98,7 +98,7 @@ final readonly class SecretsDirectory implements SecretStorageInterface
     /**
      * Loads a secret from the filesystem.
      */
-    public function load(string $id, int $version, ?SecretNamespaceInterface $namespace): SecretKeyInterface
+    public function load(string $id, int $version, ?SecretNamespaceInterface $namespace = null): SecretKeyInterface
     {
         $filepath = $this->resolveFilepath($id, $version, $namespace);
         return $this->generateSecretBuffer($id, $version, @file_get_contents($filepath, false, null, 0, $this->keySize));
@@ -107,7 +107,7 @@ final readonly class SecretsDirectory implements SecretStorageInterface
     /**
      * Checks if the secret exists in the filesystem
      */
-    public function has(string $id, int $version, ?SecretNamespaceInterface $namespace): bool
+    public function has(string $id, int $version, ?SecretNamespaceInterface $namespace = null): bool
     {
         try {
             $this->resolveFilepath($id, $version, $namespace);
