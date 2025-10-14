@@ -77,7 +77,7 @@ abstract readonly class AbstractSecretKey implements ByteArrayInterface,
         return $this->version;
     }
 
-    final public function handleRequest(SecretsUtilityInterface $class, string $method, object|string|null $subject): object
+    final public function requestSecret(SecretsUtilityInterface $class, string $method, object|string|null $subject): object
     {
         // Validate FQCN of secret requester/utilizer
         if (!$this->storage->trustedFqcn()->canUtilizeSecrets($class)) {
