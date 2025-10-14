@@ -17,7 +17,6 @@ use Charcoal\Filesystem\Enums\Assert;
 use Charcoal\Filesystem\Exceptions\FilesystemException;
 use Charcoal\Filesystem\Node\DirectoryNode;
 use Charcoal\Filesystem\Path\DirectoryPath;
-use Charcoal\Security\Secrets\Config\TrustedFqcn;
 use Charcoal\Security\Secrets\Contracts\SecretsProviderEnumInterface;
 use Charcoal\Security\Secrets\SecretsKms;
 use Charcoal\Security\Secrets\SecretsNamespace;
@@ -38,10 +37,7 @@ final readonly class SecretsDirectory implements SecretStorageInterface
     /**
      * SecretsDirectory constructor.
      */
-    public function __construct(
-        private SecretsProviderEnumInterface $enum,
-        private TrustedFqcn                  $trustedFqcn
-    )
+    public function __construct(private SecretsProviderEnumInterface $enum)
     {
         try {
             $this->directory = new DirectoryNode(new DirectoryPath($enum->resolvePath()));
@@ -229,15 +225,6 @@ final readonly class SecretsDirectory implements SecretStorageInterface
     }
 
     /**
-     * Returns the TrustedFqcnInterface instance.
-     * This is used to validate namespace and secret utilizer concrete classes.
-     */
-    public function trustedFqcn(): TrustedFqcn
-    {
-        return $this->trustedFqcn;
-    }
-
-    /**
      * @param string $id
      * @param int $version
      * @return string
@@ -268,10 +255,6 @@ final readonly class SecretsDirectory implements SecretStorageInterface
      */
     private function normalizePath(?SecretNamespaceInterface $namespace): string
     {
-        if ($namespace && !$this->trustedFqcn->isValidNamespace($namespace::class)) {
-            throw new \DomainException("Unregistered namespace class: " . $namespace::class);
-        }
-
         if (!$namespace) {
             return $this->directory->path->absolute;
         }

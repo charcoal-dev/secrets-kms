@@ -13,7 +13,6 @@ use Charcoal\Contracts\Buffers\ByteArrayInterface;
 use Charcoal\Contracts\Buffers\Sensitive\SensitiveKeyBufferInterface;
 use Charcoal\Contracts\Security\Secrets\SecretKeyInterface;
 use Charcoal\Contracts\Security\Secrets\SecretStorageInterface;
-use Charcoal\Contracts\Security\Secrets\SecretsUtilityInterface;
 use Charcoal\Security\Secrets\SecretsKms;
 use Charcoal\Security\Secrets\Traits\SensitiveBufferTrait;
 
@@ -77,28 +76,12 @@ abstract readonly class AbstractSecretKey implements ByteArrayInterface,
         return $this->version;
     }
 
-    final public function requestSecret(
-        SecretsUtilityInterface $class,
-        string                  $method,
-        int                     $argIndex = 0,
-        array                   $args = []
-    ): mixed
+    /**
+     * @param \Closure(string): mixed $callback
+     * @return mixed
+     */
+    public function useSecretEntropy(\Closure $callback): mixed
     {
-        // Validate FQCN of secret requester/utilizer
-        if (!$this->storage->trustedFqcn()->canUtilizeSecrets($class)) {
-            throw new \DomainException("Cannot utilize secrets from class: " . $class::class);
-        }
-
-        // Make sure the method exists; and is callable
-        if (!is_callable([$class, $method])) {
-            throw new \LogicException("Method does not exist: " . $method);
-        }
-
-        if ($args && !array_is_list($args)) {
-            throw new \InvalidArgumentException("Invalid set of arguments to requestSecret method");
-        }
-
-        $args[$argIndex] = $this->entropy;
-        return call_user_func_array([$class, $method], $args);
+        return $callback($this->entropy);
     }
 }
