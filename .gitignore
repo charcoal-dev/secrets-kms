@@ -1,6 +1,7 @@
 .idea/
 vendor/
 workspace/
+tests/Fixtures/Secrets/temp/**
 composer.phar
 composer.lock
 

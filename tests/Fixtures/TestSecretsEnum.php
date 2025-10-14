@@ -14,6 +14,7 @@ use Charcoal\Security\Secrets\Enums\KeySize;
 enum TestSecretsEnum: string implements SecretsProviderEnumInterface
 {
     case Example = "example_secrets";
+    case Temp = "temp";
 
     public function getId(): string
     {

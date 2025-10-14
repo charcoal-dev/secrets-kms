@@ -13,6 +13,8 @@ use Charcoal\Security\Secrets\Types\SecretKey16;
 use Charcoal\Security\Secrets\Types\SecretKey20;
 use Charcoal\Security\Secrets\Types\SecretKey24;
 use Charcoal\Security\Secrets\Types\SecretKey32;
+use Charcoal\Security\Secrets\Types\SecretKey40;
+use Charcoal\Security\Secrets\Types\SecretKey64;
 
 /**
  * Key Types
@@ -37,6 +39,8 @@ enum KeySize: int
             self::Bytes20 => SecretKey20::class,
             self::Bytes24 => SecretKey24::class,
             self::Bytes32 => SecretKey32::class,
+            self::Bytes40 => SecretKey40::class,
+            self::Bytes64 => SecretKey64::class,
             default => throw new \RuntimeException("No secret buffer available for: " . $this->name),
         };
     }
