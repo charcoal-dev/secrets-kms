@@ -17,7 +17,7 @@ use Charcoal\Filesystem\Enums\Assert;
 use Charcoal\Filesystem\Exceptions\FilesystemException;
 use Charcoal\Filesystem\Node\DirectoryNode;
 use Charcoal\Filesystem\Path\DirectoryPath;
-use Charcoal\Security\Secrets\Contracts\SecretsProviderEnumInterface;
+use Charcoal\Security\Secrets\Contracts\SecretsProviderInterface;
 use Charcoal\Security\Secrets\SecretsKms;
 use Charcoal\Security\Secrets\SecretsNamespace;
 
@@ -37,7 +37,7 @@ final readonly class SecretsDirectory implements SecretStorageInterface
     /**
      * SecretsDirectory constructor.
      */
-    public function __construct(private SecretsProviderEnumInterface $enum)
+    public function __construct(private SecretsProviderInterface $enum)
     {
         try {
             $this->directory = new DirectoryNode(new DirectoryPath($enum->resolvePath()));

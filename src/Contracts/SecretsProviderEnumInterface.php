@@ -8,8 +8,6 @@ declare(strict_types=1);
 
 namespace Charcoal\Security\Secrets\Contracts;
 
-use Charcoal\Security\Secrets\Enums\KeySize;
-
 /**
  * Interface SecretsProviderEnumInterface
  * Defines a contract for enums that provide secrets and their path resolution.

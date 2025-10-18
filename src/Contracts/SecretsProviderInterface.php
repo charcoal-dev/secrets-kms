@@ -8,6 +8,7 @@ declare(strict_types=1);
 
 namespace Charcoal\Security\Secrets\Contracts;
 
+use Charcoal\Filesystem\Path\DirectoryPath;
 use Charcoal\Security\Secrets\Enums\KeySize;
 
 /**
@@ -18,7 +19,7 @@ interface SecretsProviderInterface
 {
     public function getId(): string;
 
-    public function resolvePath(): string;
+    public function resolvePath(): string|DirectoryPath;
 
     public function getKeySize(): KeySize;
 }
