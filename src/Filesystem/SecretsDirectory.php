@@ -40,7 +40,9 @@ final readonly class SecretsDirectory implements SecretStorageInterface
     public function __construct(private SecretsProviderInterface $enum)
     {
         try {
-            $this->directory = new DirectoryNode(new DirectoryPath($enum->resolvePath()));
+            $dirPath = $this->enum->resolvePath() instanceof DirectoryPath ? $this->enum->resolvePath()
+                : new DirectoryPath($this->enum->resolvePath());
+            $this->directory = new DirectoryNode($dirPath);
             match (DIRECTORY_SEPARATOR) {
                 "\\" => $this->directory->path->assert(Assert::Readable),
                 default => $this->directory->path->assert(Assert::Readable, Assert::Executable),
