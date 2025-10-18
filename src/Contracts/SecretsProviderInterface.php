@@ -11,9 +11,14 @@ namespace Charcoal\Security\Secrets\Contracts;
 use Charcoal\Security\Secrets\Enums\KeySize;
 
 /**
- * Interface SecretsProviderEnumInterface
- * Defines a contract for enums that provide secrets and their path resolution.
+ * Interface SecretsProviderInterface
+ * @package Charcoal\Security\Secrets\Contracts
  */
-interface SecretsProviderEnumInterface extends SecretsProviderInterface, \UnitEnum
+interface SecretsProviderInterface
 {
+    public function getId(): string;
+
+    public function resolvePath(): string;
+
+    public function getKeySize(): KeySize;
 }
