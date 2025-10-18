@@ -100,10 +100,20 @@ final readonly class SecretsDirectory implements SecretStorageInterface
     /**
      * Loads a secret from the filesystem.
      */
-    public function load(string $id, int $version, ?SecretNamespaceInterface $namespace = null): SecretKeyInterface
+    public function load(
+        string                    $id,
+        int                       $version,
+        ?SecretNamespaceInterface $namespace = null,
+        bool                      $allowNullPadding = false
+    ): SecretKeyInterface
     {
         $filepath = $this->resolveFilepath($id, $version, $namespace);
-        return $this->generateSecretBuffer($id, $version, @file_get_contents($filepath, false, null, 0, $this->keySize));
+        return $this->generateSecretBuffer(
+            $id,
+            $version,
+            @file_get_contents($filepath, false, null, 0, $this->keySize),
+            $allowNullPadding
+        );
     }
 
     /**
@@ -221,9 +231,14 @@ final readonly class SecretsDirectory implements SecretStorageInterface
     /**
      * Generates a new secret key buffer.
      */
-    private function generateSecretBuffer(string $ref, int $version, false|string $entropy): SecretKeyInterface
+    private function generateSecretBuffer(
+        string       $ref,
+        int          $version,
+        false|string $entropy,
+        bool         $allowNullPadding = false
+    ): SecretKeyInterface
     {
-        return new $this->keyBufferFqcn($this, $ref, $version, $entropy);
+        return new $this->keyBufferFqcn($this, $ref, $version, $entropy, $allowNullPadding);
     }
 
     /**

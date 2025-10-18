@@ -32,7 +32,8 @@ abstract readonly class AbstractSecretKey implements ByteArrayInterface,
         private string                 $ref,
         private int                    $version,
         #[\SensitiveParameter]
-        private false|string           $entropy
+        private false|string           $entropy,
+        private bool                   $allowNullPadding = false
     )
     {
         if (!static::FixedLengthBytes || !in_array(static::FixedLengthBytes, SecretsKms::SECRET_KEY_BUFFERS, true)) {
@@ -49,7 +50,7 @@ abstract readonly class AbstractSecretKey implements ByteArrayInterface,
             throw new \LengthException(sprintf("Entropy must be %d bytes", static::FixedLengthBytes));
         }
 
-        if (!SecretsKms::SECRET_ENTROPY_NULL_PADDING) {
+        if (!$allowNullPadding) {
             if (str_starts_with($this->entropy, "\0") || str_ends_with($this->entropy, "\0")) {
                 throw new \InvalidArgumentException("Entropy must not be null padded");
             }

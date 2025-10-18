@@ -31,9 +31,9 @@ final readonly class SecretsNamespace implements SecretNamespaceInterface
     /**
      * Loads a secret from the namespace.
      */
-    public function load(string $id, int $version): SecretKeyInterface
+    public function load(string $id, int $version, bool $allowNullPadding = false): SecretKeyInterface
     {
-        return $this->storage->load($id, $version, $this);
+        return $this->storage->load($id, $version, $this, $allowNullPadding);
     }
 
     /**
