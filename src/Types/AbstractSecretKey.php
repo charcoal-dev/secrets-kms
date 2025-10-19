@@ -29,12 +29,13 @@ abstract readonly class AbstractSecretKey implements ByteArrayInterface,
     protected const int FixedLengthBytes = 0;
 
     final public function __construct(
-        private SecretStorageInterface $storage,
-        private string                 $ref,
-        private int                    $version,
+        private ?SecretStorageInterface $storage,
+        private string                  $ref,
+        private int                     $version,
         #[\SensitiveParameter]
-        private false|string           $entropy,
-        private bool                   $allowNullPadding = false
+        private false|string            $entropy,
+        private bool                    $allowNullPadding = false,
+        private bool                    $isRemixed = false,
     )
     {
         if (!static::FixedLengthBytes || !in_array(static::FixedLengthBytes, SecretsKms::SECRET_KEY_BUFFERS, true)) {
@@ -88,5 +89,31 @@ abstract readonly class AbstractSecretKey implements ByteArrayInterface,
     public function useSecretEntropy(\Closure $callback): mixed
     {
         return $callback($this->entropy);
+    }
+
+    /**
+     * Remix this entropy using HMAC to generate new deterministic entropy
+     * @api
+     */
+    public function remixEntropy(string $message, int $iterations = 1): static
+    {
+        $derived = null;
+        $this->useSecretEntropy(function (string $entropy) use (&$derived) {
+            $derived = $entropy;
+        });
+
+        for ($i = 0; $i < $iterations; $i++) {
+            $derived = hash_hmac("sha512", $message . ":" . $i, $derived, true);
+        }
+
+        $buffer = static::class;
+        return new $buffer(
+            null,
+            $this->ref . "_" . $message,
+            $this->version,
+            substr($derived, 0, static::FixedLengthBytes),
+            $this->allowNullPadding,
+            true
+        );
     }
 }
