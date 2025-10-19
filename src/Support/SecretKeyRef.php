@@ -15,6 +15,25 @@ use Charcoal\Security\Secrets\SecretsKms;
  */
 final readonly class SecretKeyRef
 {
+    /**
+     * Decode full reference back to id and version (return SecretKeyRef value object)
+     * @api
+     */
+    final public static function decodeRef(string $refId): SecretKeyRef
+    {
+        if (!$refId || !str_contains($refId, ":")) {
+            throw new \InvalidArgumentException("Invalid secret key reference");
+        }
+
+        $refId = explode(":", $refId, 2);
+        return new SecretKeyRef($refId[0], intval(ltrim($refId[1], "0")), true);
+    }
+
+    /**
+     * @param string $ref
+     * @param int $version
+     * @param bool $validate
+     */
     public function __construct(
         public string $ref,
         public int    $version,
