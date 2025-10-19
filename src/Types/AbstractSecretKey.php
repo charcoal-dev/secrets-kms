@@ -14,6 +14,7 @@ use Charcoal\Contracts\Buffers\Sensitive\SensitiveKeyBufferInterface;
 use Charcoal\Contracts\Security\Secrets\SecretKeyInterface;
 use Charcoal\Contracts\Security\Secrets\SecretStorageInterface;
 use Charcoal\Security\Secrets\SecretsKms;
+use Charcoal\Security\Secrets\Support\SecretKeyRef;
 use Charcoal\Security\Secrets\Traits\SensitiveBufferTrait;
 
 /**
@@ -84,5 +85,19 @@ abstract readonly class AbstractSecretKey implements ByteArrayInterface,
     public function useSecretEntropy(\Closure $callback): mixed
     {
         return $callback($this->entropy);
+    }
+
+    /**
+     * Decode full reference back to id and version (return SecretKeyRef value object)
+     * @api
+     */
+    final public static function decodeRef(string $refId): SecretKeyRef
+    {
+        if (!$refId || !str_contains($refId, ":")) {
+            throw new \InvalidArgumentException("Invalid secret key reference");
+        }
+
+        $refId = explode(":", $refId, 2);
+        return new SecretKeyRef($refId[0], intval(ltrim($refId[1], "0")), true);
     }
 }

@@ -288,7 +288,7 @@ final readonly class SecretsDirectory implements SecretStorageInterface
      */
     private function resolveFilepath(string $id, int $version, ?SecretNamespaceInterface $namespace): string
     {
-        if (!preg_match(SecretsKms::REF_REGEXP, $id) || $version >= 65535) {
+        if (!preg_match(SecretsKms::REF_REGEXP, $id) || $version > 65535) {
             throw new \InvalidArgumentException("Invalid secret reference format");
         }
 
