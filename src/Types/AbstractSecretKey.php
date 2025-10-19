@@ -63,9 +63,12 @@ abstract readonly class AbstractSecretKey implements ByteArrayInterface,
         return static::FixedLengthBytes;
     }
 
+    /**
+     * @return string
+     */
     final public function ref(): string
     {
-        return sprintf("%s:%05d", $this->ref, $this->version);
+        return SecretKeyRef::encode($this->ref, $this->version);
     }
 
     final public function id(): string
