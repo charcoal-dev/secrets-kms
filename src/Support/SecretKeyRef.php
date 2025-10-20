@@ -110,7 +110,7 @@ final readonly class SecretKeyRef
      * Returns the new instance of SecretKeyRef with remixing parameters altered
      * @api
      */
-    public function withRemixing(string $message, int $iterations): self
+    public function withRemixing(?string $message, ?int $iterations): self
     {
         $this->validateRemixing($message, $iterations);
         return new self(false, $this->ref, $this->version, $this->namespace, $message, $iterations);
