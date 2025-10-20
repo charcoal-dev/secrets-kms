@@ -77,18 +77,20 @@ final readonly class SecretKeyRef
     }
 
     /**
-     * Encodes the SecretKeyRef value to string; that could be used to uniquely identify the secret while indexing
+     * @param bool $withRemixingAttributes
      * @return string
      */
-    public function toString(): string
+    public function toString(bool $withRemixingAttributes = true): string
     {
         $encoded = self::encode($this->ref, $this->version);
         if ($this->namespace) {
             $encoded = $this->namespace . "@" . $encoded;
         }
 
-        if ($this->remixMessage) {
-            $encoded .= "[*]:" . $this->remixMessage . ":" . $this->remixIterations;
+        if ($withRemixingAttributes) {
+            if ($this->remixMessage) {
+                $encoded .= "[*]:" . $this->remixMessage . ":" . $this->remixIterations;
+            }
         }
 
         return $encoded;
