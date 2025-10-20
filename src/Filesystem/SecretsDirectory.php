@@ -221,7 +221,17 @@ final readonly class SecretsDirectory implements SecretStorageInterface
 
         if (!SecretsKms::SECRET_ENTROPY_NULL_PADDING) {
             if (str_starts_with($entropy, "\0") || str_ends_with($entropy, "\0")) {
-                throw new \InvalidArgumentException("Entropy must not be null padded");
+                if (!SecretsKms::$nullPaddingReplace) {
+                    throw new \InvalidArgumentException("Entropy must not be null padded");
+                }
+
+                if (str_starts_with($entropy, "\0")) {
+                    $entropy = substr_replace($entropy, SecretsKms::SECRET_ENTROPY_NULL_PADDING_REPLACEMENT, 0, 1);
+                }
+
+                if (str_ends_with($entropy, "\0")) {
+                    $entropy = substr_replace($entropy, SecretsKms::SECRET_ENTROPY_NULL_PADDING_REPLACEMENT, -1, 1);
+                }
             }
         }
 

@@ -27,7 +27,7 @@ final readonly class SecretKeyRef
         }
 
         $refId = explode(":", $refId, 2);
-        return new SecretKeyRef($refId[0], intval(ltrim($refId[1], "0")), null, true);
+        return new SecretKeyRef(true, $refId[0], intval(ltrim($refId[1], "0")), null);
     }
 
     /**
@@ -41,16 +41,20 @@ final readonly class SecretKeyRef
     }
 
     /**
+     * @param bool $validate
      * @param string $ref
      * @param int $version
      * @param string|null $namespace
-     * @param bool $validate
+     * @param string|null $remixMessage
+     * @param int|null $remixIterations
      */
     public function __construct(
+        bool           $validate,
         public string  $ref,
         public int     $version,
         public ?string $namespace = null,
-        bool           $validate
+        public ?string $remixMessage = null,
+        public ?int    $remixIterations = null,
     )
     {
         if ($validate) {
@@ -65,6 +69,10 @@ final readonly class SecretKeyRef
             if ($this->namespace) {
                 $this->validateNamespace($this->namespace);
             }
+
+            if ($this->remixMessage || $this->remixIterations) {
+                $this->validateRemixing($this->remixMessage, $this->remixIterations);
+            }
         }
     }
 
@@ -75,7 +83,37 @@ final readonly class SecretKeyRef
     public function withNamespace(string $namespace): self
     {
         $this->validateNamespace($namespace);
-        return new self($this->ref, $this->version, $namespace, false);
+        return new self(false, $this->ref, $this->version, $namespace, $this->remixMessage, $this->remixIterations);
+    }
+
+    /**
+     * Returns the new instance of SecretKeyRef with remixing parameters altered
+     * @api
+     */
+    public function withRemixing(string $message, int $iterations): self
+    {
+        $this->validateRemixing($message, $iterations);
+        return new self(false, $this->ref, $this->version, $this->namespace, $message, $iterations);
+    }
+
+    /**
+     * @param string|null $message
+     * @param int|null $iterations
+     * @return void
+     */
+    private function validateRemixing(?string $message, ?int $iterations): void
+    {
+        if (!$message || !$iterations) {
+            throw new \InvalidArgumentException("Remix message and iterations must both be set or both be null");
+        }
+
+        if (!preg_match(SecretsKms::REF_REGEXP, $message)) {
+            throw new \InvalidArgumentException("Invalid remix message format");
+        }
+
+        if ($iterations < 1) {
+            throw new \InvalidArgumentException("Invalid remix iterations");
+        }
     }
 
     /**

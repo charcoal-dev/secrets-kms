@@ -20,8 +20,6 @@ final class SecretsKms
     public const string REF_REGEXP = "/\A[A-Za-z0-9][A-Za-z0-9\-_]{1,39}\z/";
     /** language=RegExp pattern for namespace */
     public const string NAMESPACE_REGEXP = "/\A[A-Za-z0-9][A-Za-z0-9\-_]{1,39}(\/[A-Za-z0-9][A-Za-z0-9\-_]{1,39}){0,3}\z/";
-    /** Invalidates the secret that has NULL bytes on either end */
-    public const bool SECRET_ENTROPY_NULL_PADDING = false;
 
     /**
      * Local File System (LFS) behaviour toggles
@@ -29,6 +27,15 @@ final class SecretsKms
     public static bool $lfsUseFileExtensions = false;
     public static bool $lfsAllowDeletes = false;
     public static bool $lfsAllowWrites = false;
+
+    /**
+     * Null Padding Handling
+     */
+    public static bool $nullPaddingReplace = true;
+    /** Invalidates the secret that has NULL bytes on either end */
+    public const bool SECRET_ENTROPY_NULL_PADDING = false;
+    /** @var string Bytes to replace NULL bytes padding (if enabled) */
+    public const string SECRET_ENTROPY_NULL_PADDING_REPLACEMENT = "\1";
 
     /**
      * Local File System (LFS) constants.
