@@ -308,7 +308,7 @@ final readonly class SecretsDirectory implements SecretStorageInterface
 
         error_clear_last();
         if (!@file_exists($filepath) || !@is_file($filepath) || !@is_readable($filepath)) {
-            throw new \RuntimeException("Secret file not found or not readable",
+            throw new \RuntimeException("Secret file not found or not readable: " . basename($filepath),
                 previous: ErrorHelper::lastErrorToRuntimeException());
         }
 
