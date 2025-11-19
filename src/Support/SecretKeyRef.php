@@ -123,7 +123,7 @@ final readonly class SecretKeyRef
      */
     private function validateRemixing(?string $message, ?int $iterations): void
     {
-        if (!$message || !$iterations) {
+        if (($message && !$iterations) || (!$message && $iterations)) {
             throw new \InvalidArgumentException("Remix message and iterations must both be set or both be null");
         }
 
