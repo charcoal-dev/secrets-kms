@@ -127,6 +127,10 @@ final readonly class SecretKeyRef
             throw new \InvalidArgumentException("Remix message and iterations must both be set or both be null");
         }
 
+        if (!($message && $iterations)) {
+            return;
+        }
+
         if (!preg_match(SecretsKms::REF_REGEXP, $message)) {
             throw new \InvalidArgumentException("Invalid remix message format");
         }
